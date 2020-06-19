@@ -16,6 +16,9 @@ from __future__ import division
 
 # System level imports
 import sys
+sys.path.append('/opt/CarlaSimulator/PythonClient/carla/')
+sys.path.remove('/opt/carla-simulator/PythonAPI/carla')
+sys.path.remove('/opt/carla-simulator/PythonAPI/carla/dist/carla-0.9.9-py3.7-linux-x86_64.egg')
 import os
 import argparse
 import logging
@@ -34,8 +37,8 @@ from carla            import sensor
 from carla.client     import make_carla_client, VehicleControl
 from carla.settings   import CarlaSettings
 from carla.tcp        import TCPConnectionError
-from carla.controller import utils
-
+#from carla.controller import utils
+#from carla import utils
 """
 Configurable params
 """
