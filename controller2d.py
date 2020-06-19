@@ -26,6 +26,7 @@ class Controller2D(object):
         self._pi                 = np.pi
         self._2pi                = 2.0 * np.pi
         self.crosstrack_error = 0
+        self.k_e = 0.3
 
     def update_values(self, x, y, yaw, speed, timestamp, frame):
         self._current_x         = x
@@ -78,6 +79,16 @@ class Controller2D(object):
         # Clamp the steering command to valid bounds
         brake           = np.fmax(np.fmin(input_brake, 1.0), 0.0)
         self._set_brake = brake
+
+    def orientation(self, p, q, r):
+        val = ((q[1] - p[1]) * (r[0] - q[0])) - ((q[0] - p[0]) * (r[1] - q[1]))
+
+        if(val == 0):
+            return 1 #colinear
+        elif(val > 0):
+            return 1 #clockwise
+        else:
+            return -1 #counterclockwise 
 
     def update_controls(self):
         ######################################################
@@ -165,7 +176,7 @@ class Controller2D(object):
             # Change these outputs with the longitudinal controller. Note that
             # brake_output is optional and is not required to pass the
             # assignment, as the car will naturally slow down over time.
-            throttle_output = 0.5
+            throttle_output = 0.8
             brake_output    = 0
 
             ######################################################
@@ -182,10 +193,12 @@ class Controller2D(object):
             #angle = arctan(y2 - y1 / x2 - x1), where point (x1,y1) is the first waypoint of the current trajectory and the point (x2,y2) is the last waypoint of the current trajectory
             yaw_path = np.arctan2(waypoints[-1][1] - waypoints[0][1], waypoints[-1][0] - waypoints[0][0])
             
-            #print(self.crosstrack_error)
-            print(yaw_path - yaw)
+            yaw_diff = yaw_path - yaw
+            orient = self.orientation(waypoints[0][:2], waypoints[-1][:2], (x,y))
+            cross_track_term = np.arctan2(self.k_e*self.crosstrack_error*orient, v)
+            #print(yaw_diff, self.crosstrack_error)
             # Change the steer output with the lateral controller. 
-            steer_output    = yaw_path - yaw
+            steer_output    = yaw_diff + cross_track_term
 
             ######################################################
             # SET CONTROLS OUTPUT
