@@ -25,6 +25,7 @@ class Controller2D(object):
         self._conv_rad_to_steer  = 180.0 / 70.0 / np.pi
         self._pi                 = np.pi
         self._2pi                = 2.0 * np.pi
+        self.crosstrack_error = 0
 
     def update_values(self, x, y, yaw, speed, timestamp, frame):
         self._current_x         = x
@@ -52,6 +53,7 @@ class Controller2D(object):
         else:
             desired_speed = self._waypoints[-1][2]
         self._desired_speed = desired_speed
+        self.crosstrack_error = min_dist
 
     def update_waypoints(self, new_waypoints):
         self._waypoints = new_waypoints
@@ -163,7 +165,7 @@ class Controller2D(object):
             # Change these outputs with the longitudinal controller. Note that
             # brake_output is optional and is not required to pass the
             # assignment, as the car will naturally slow down over time.
-            throttle_output = 0
+            throttle_output = 0.5
             brake_output    = 0
 
             ######################################################
@@ -176,9 +178,14 @@ class Controller2D(object):
                 access the persistent variables declared above here. For
                 example, can treat self.vars.v_previous like a "global variable".
             """
+            #Calcul of the yaw of the trajectory by computing the tangent of the waypoint trajctory
+            #angle = arctan(y2 - y1 / x2 - x1), where point (x1,y1) is the first waypoint of the current trajectory and the point (x2,y2) is the last waypoint of the current trajectory
+            yaw_path = np.arctan2(waypoints[-1][1] - waypoints[0][1], waypoints[-1][0] - waypoints[0][0])
             
+            #print(self.crosstrack_error)
+            print(yaw_path - yaw)
             # Change the steer output with the lateral controller. 
-            steer_output    = 0
+            steer_output    = yaw_path - yaw
 
             ######################################################
             # SET CONTROLS OUTPUT
