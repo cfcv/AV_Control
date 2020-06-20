@@ -27,6 +27,9 @@ class Controller2D(object):
         self._2pi                = 2.0 * np.pi
         self.crosstrack_error = 0
         self.k_e = 0.3
+        self.k_p = 1.0
+        self.k_i = 0.2
+        self.k_d = 0.01
 
     def update_values(self, x, y, yaw, speed, timestamp, frame):
         self._current_x         = x
@@ -127,7 +130,8 @@ class Controller2D(object):
             throttle_output = 0.5 * self.vars.v_previous
         """
         self.vars.create_var('v_previous', 0.0)
-
+        self.vars.create_var('t_previous', 0.0)
+        self.vars.create_var('i_v_error', 0.0)
         # Skip the first frame to store previous values properly
         if self._start_control_loop:
             """
@@ -176,9 +180,23 @@ class Controller2D(object):
             # Change these outputs with the longitudinal controller. Note that
             # brake_output is optional and is not required to pass the
             # assignment, as the car will naturally slow down over time.
-            throttle_output = 0.8
-            brake_output    = 0
+            delta_t = t - self.vars.t_previous
 
+            v_error = v_desired - v
+            d_dt_v_error = (v_error - self.vars.v_previous) / delta_t
+            self.vars.i_v_error += v_error * delta_t
+
+            pid = self.k_p*v_error + self.k_i*self.vars.i_v_error + self.k_d*d_dt_v_error
+            print(pid)
+            throttle_output = 0.0
+            brake_output    = 0.0
+   
+            if(pid < 0):
+                brake_output = pid
+            else:
+                throttle_output = pid
+
+            self.vars.t_previous = t
             ######################################################
             ######################################################
             # MODULE 7: IMPLEMENTATION OF LATERAL CONTROLLER HERE
@@ -190,13 +208,14 @@ class Controller2D(object):
                 example, can treat self.vars.v_previous like a "global variable".
             """
             #Calcul of the yaw of the trajectory by computing the tangent of the waypoint trajctory
-            #angle = arctan(y2 - y1 / x2 - x1), where point (x1,y1) is the first waypoint of the current trajectory and the point (x2,y2) is the last waypoint of the current trajectory
             yaw_path = np.arctan2(waypoints[-1][1] - waypoints[0][1], waypoints[-1][0] - waypoints[0][0])
             
             yaw_diff = yaw_path - yaw
+
+            #Define if the car is on the left or right from the trajectory so we can choose the correct direction to steer
             orient = self.orientation(waypoints[0][:2], waypoints[-1][:2], (x,y))
             cross_track_term = np.arctan2(self.k_e*self.crosstrack_error*orient, v)
-            #print(yaw_diff, self.crosstrack_error)
+
             # Change the steer output with the lateral controller. 
             steer_output    = yaw_diff + cross_track_term
 
