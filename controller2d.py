@@ -30,6 +30,7 @@ class Controller2D(object):
         self.k_p = 1.0
         self.k_i = 0.2
         self.k_d = 0.01
+        self.total_v_error = 0
 
     def update_values(self, x, y, yaw, speed, timestamp, frame):
         self._current_x         = x
@@ -92,6 +93,14 @@ class Controller2D(object):
             return 1 #clockwise
         else:
             return -1 #counterclockwise 
+
+    def set_PID(self, p, i, d):
+        self.k_p = p
+        self.k_i = i
+        self.k_d = d
+
+    def set_k_e(self, k):
+        self.k_e = k
 
     def update_controls(self):
         ######################################################
@@ -187,7 +196,7 @@ class Controller2D(object):
             self.vars.i_v_error += v_error * delta_t
 
             pid = self.k_p*v_error + self.k_i*self.vars.i_v_error + self.k_d*d_dt_v_error
-            print(pid)
+            #print(pid)
             throttle_output = 0.0
             brake_output    = 0.0
    
@@ -197,6 +206,7 @@ class Controller2D(object):
                 throttle_output = pid
 
             self.vars.t_previous = t
+            self.total_v_error += abs(v_error)
             ######################################################
             ######################################################
             # MODULE 7: IMPLEMENTATION OF LATERAL CONTROLLER HERE
@@ -217,7 +227,7 @@ class Controller2D(object):
             cross_track_term = np.arctan2(self.k_e*self.crosstrack_error*orient, v)
 
             # Change the steer output with the lateral controller. 
-            steer_output    = yaw_diff + cross_track_term
+            steer_output = yaw_diff + cross_track_term
 
             ######################################################
             # SET CONTROLS OUTPUT
