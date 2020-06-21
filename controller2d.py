@@ -26,10 +26,10 @@ class Controller2D(object):
         self._pi                 = np.pi
         self._2pi                = 2.0 * np.pi
         self.crosstrack_error = 0
-        self.k_e = 0.3
-        self.k_p = 1.0
-        self.k_i = 0.2
-        self.k_d = 0.01
+        self.k_e = 0.8
+        self.k_p = 1.908852977263873
+        self.k_i = 0.6316572093202273
+        self.k_d = 0.0001
         self.total_v_error = 0
 
     def update_values(self, x, y, yaw, speed, timestamp, frame):
