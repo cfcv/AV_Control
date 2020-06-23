@@ -13,6 +13,26 @@ Denoting the velocity error as v\_error, it's derivative as dt\_v\_error and it'
 
 If the result is positive it means an acceleration value and if it is negative it means a brake value. The PID coefficients were selected by the twiddle algorithm. 
 
+### Lateral Control
+For the lateral control a stanley controller was implemented, taking into account the heading and crosstrack error related to the current waypoint trajectory.
+1. Heading error<br/>
+
+The current yaw of the vehicle is provided by the measurements, so we need to calculate juste the yaw of the trajectory. This is simply the angle formed by the desired waypoint trajectory and can be conputed as follow:
+```yaw_trajectory = np.arctan2(waypoints[-1][1] - waypoints[0][1], waypoints[-1][0] - waypoints[0][0])```
+
+Once we have the yaw of the vehicle and the yaw of the trajectory we can compute the heading error by doing:
+```heading\_error = yaw\_trajectory - yaw\_car```
+
+2. Crosstrack error<br/>
+
+The crosstrack is the closest distance from the vehicle's current position and the trajectory. The crosstrack error term for the steering angle is the angle between the distane to the trajectory and the velocity vector. This can be computed as follows:
+```crosstrack\_error\_term = np.arctan2(k_e * crosstrack\_error, velocity)```
+
+Where k_e is a cofficient that multiplies the distance to the desired trajectory. It was manually selected ans setted to k_e = 0.8 
+
+3. Putting all together<br/>
+
+```Steer = heading\_error + crosstrack\_error\_term```
 ## Results
 
 ## Setup
