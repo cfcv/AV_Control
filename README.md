@@ -3,6 +3,7 @@ This project aims to build a controller to send steering and throttle commands t
 
 <p align="center">
 [![Watch the video](http://i3.ytimg.com/vi/2qNGwuyDDZ0/hqdefault.jpg)](https://www.youtube.com/watch?v=2qNGwuyDDZ0)
+<img src="http://i3.ytimg.com/vi/2qNGwuyDDZ0/hqdefault.jpg">
 </p>
 
 ## Results
