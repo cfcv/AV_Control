@@ -1,7 +1,11 @@
 # ControlAV
 This project aims to build a controller to send steering and throttle commands to a simulated self-driving car in order to follow a waypoint trajectory.
 
-## Controller
+[![Watch the video](http://i3.ytimg.com/vi/2qNGwuyDDZ0/hqdefault.jpg)](https://www.youtube.com/watch?v=2qNGwuyDDZ0)
+
+## Results
+
+## Controller Implementation
 #### Longitudinal Control
 For the longitudinal control a PID was implemented. The proportional, derivative and integral coefficients are:
 * K_p = 1.908852977263873 
@@ -17,7 +21,7 @@ If the result is positive it means an acceleration value and if it is negative i
 For the lateral control a stanley controller was implemented, taking into account the heading and crosstrack error related to the current waypoint trajectory.
 1. Heading error<br/>
 
-The current yaw of the vehicle is provided by the measurements, so we need to calculate just the yaw of the trajectory. This is simply the angle formed by the desired waypoint trajectory and can be conputed as follow:<br/>
+The current yaw of the vehicle is provided by the measurements, so we need to calculate just the yaw of the trajectory. This is simply the angle formed by the desired waypoint trajectory and can be computed as follows:<br/>
 ```yaw_trajectory = np.arctan2(waypoints[-1][1] - waypoints[0][1], waypoints[-1][0] - waypoints[0][0])```
 
 Once we have the yaw of the vehicle and the yaw of the trajectory we can compute the heading error by doing:
@@ -33,7 +37,6 @@ Where k_e is a cofficient that multiplies the distance to the desired trajectory
 3. Putting all together<br/>
 
 ```Steer = heading_error + crosstrack_error_term```
-## Results
 
 ## Setup
 The version of CARLA simulator used for this project(0.8.4) only supports python 3.5.x or 3.6.x
