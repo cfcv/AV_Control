@@ -1,7 +1,9 @@
 # ControlAV
 This project aims to build a controller to send steering and throttle commands to a simulated self-driving car in order to follow a waypoint trajectory. Click in the image to check out the video.
 
-<center>[![Watch the video](http://i3.ytimg.com/vi/2qNGwuyDDZ0/hqdefault.jpg)](https://www.youtube.com/watch?v=2qNGwuyDDZ0)</center>
+<p align="center">
+[![Watch the video](http://i3.ytimg.com/vi/2qNGwuyDDZ0/hqdefault.jpg)](https://www.youtube.com/watch?v=2qNGwuyDDZ0)
+</p>
 
 ## Results
 
