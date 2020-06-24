@@ -9,6 +9,11 @@ This project aims to build a controller to send steering and throttle commands t
 
 ## Results
 
+<p align="center">
+<img src="https://github.com/cfcv/ControlAV/tree/master/controller_output/forward_speed.png">
+<img src="https://github.com/cfcv/ControlAV/tree/master/controller_output/trajectory.png">
+</p>
+
 ## Controller Implementation
 #### Longitudinal Control
 For the longitudinal control a PID was implemented. The proportional, derivative and integral coefficients are:
