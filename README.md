@@ -10,8 +10,8 @@ This project aims to build a controller to send steering and throttle commands t
 ## Results
 
 <p align="center">
-<img src="https://github.com/cfcv/ControlAV/tree/master/controller_output/forward_speed.png">
-<img src="https://github.com/cfcv/ControlAV/tree/master/controller_output/trajectory.png">
+<img src="https://github.com/cfcv/ControlAV/blob/master/controller_output/forward_speed.png">
+<img src="https://github.com/cfcv/ControlAV/blob/master/controller_output/trajectory.png">
 </p>
 
 ## Controller Implementation
