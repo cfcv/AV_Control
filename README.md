@@ -72,3 +72,5 @@ In order to run the project you have to first run the server side executing the 
 Finally you can run the client side that will send data to control the vehicle
 
 ```python $HOME/opt/CarlaSimulator/PythonClient/ControlAV/module_7.py```
+
+## Conclusion
