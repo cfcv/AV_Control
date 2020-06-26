@@ -74,3 +74,5 @@ Finally you can run the client side that will send data to control the vehicle
 ```python $HOME/opt/CarlaSimulator/PythonClient/ControlAV/module_7.py```
 
 ## Conclusion
+This simple contoller can successifully follow a desired trajectory and a target speed within this route simulation, here we don't take into account dynamic objects that could interact with the vehicle or the urban rules as limit speed and traffic lights. This projects only aims to output controls to follow a desired trajectory.
+Improvements For more realistic: jerk
