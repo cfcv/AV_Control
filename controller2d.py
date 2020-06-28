@@ -138,7 +138,7 @@ class Controller2D(object):
             Example: Accessing the value from 'v_previous' to be used
             throttle_output = 0.5 * self.vars.v_previous
         """
-        self.vars.create_var('v_previous', 0.0)
+        self.vars.create_var('v_error_previous', 0.0)
         self.vars.create_var('t_previous', 0.0)
         self.vars.create_var('i_v_error', 0.0)
         # Skip the first frame to store previous values properly
@@ -192,7 +192,7 @@ class Controller2D(object):
             delta_t = t - self.vars.t_previous
 
             v_error = v_desired - v
-            d_dt_v_error = (v_error - self.vars.v_previous) / delta_t
+            d_dt_v_error = (v_error - self.vars.v_error_previous) / delta_t
             self.vars.i_v_error += v_error * delta_t
 
             pid = self.k_p*v_error + self.k_i*self.vars.i_v_error + self.k_d*d_dt_v_error
@@ -207,6 +207,7 @@ class Controller2D(object):
 
             self.vars.t_previous = t
             self.total_v_error += abs(v_error)
+            self.vars.v_error_previous = v_error
             ######################################################
             ######################################################
             # MODULE 7: IMPLEMENTATION OF LATERAL CONTROLLER HERE
